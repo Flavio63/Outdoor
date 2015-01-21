@@ -6,7 +6,7 @@ window.SelectForm = Backbone.View.extend({
         this.render();
     },
     events: {
-        'click .region': 'clicked'
+        
     },
     // this is handling DOM element
     jQueryClicked: function(event){
@@ -20,7 +20,7 @@ window.SelectForm = Backbone.View.extend({
         var regions = this.model.models;
         var len = regions.length;
         $('#territorio', this.el).append('<ol id="regions" class="list"> </ol>');
-        //$("#regions-selected", this.el).selectable();
+        //$('#territorio', this.el).append('<ol id="provinces" class="list"> </ol>');
         $("#territorio", this.el).accordion({collapsible: true, heightStyle: "content", active: false});        
         for (var i = 0; i < len; i++) {
             $('#regions', this.el).append(new RegionItem({model: regions[i]}).render().el);
@@ -47,8 +47,28 @@ window.RegionItem = Backbone.View.extend({
         this.model.bind("destroy", this.close, this);
     },
     render: function(){
-        var js = this.model.toJSON()
+        var js = this.model.toJSON();
         $(this.el).data('areaRegion',{idArea:js.idArea, idRegione:js.idRegione});
+        $(this.el).html( this.template( js ) );
+        return this;
+    }
+});
+
+window.ProvinceItem = Backbone.View.extend({
+    tagName: 'li',
+    className: 'province',
+    initialize: function(){
+        this.model.bind("click", this.clicked, this);
+    },
+    render: function(){
+        var js = this.model.toJSON();
+        $(this.el).data('province',{
+            idArea:js.idArea, 
+            idRegione:js.idRegione, 
+            idProvincia:js.idProvincia, 
+            descProvinca:js.descProvinca,
+            Sigla:js.Sigla
+        });
         $(this.el).html( this.template( js ) );
         return this;
     }

@@ -6,6 +6,8 @@ $app = new Slim();
 
 $app->get('/regioni', 'getRegioni');
 $app->get('/regioni/:id', 'getRegione');
+$app->get('/province', 'getProvince');
+$app->get('/province/:id', 'getProvincia');
 $app->get('/wines/search/:query', 'findByName');
 $app->post('/wines', 'addWine');
 $app->put('/wines/:id', 'updateWine');
@@ -20,7 +22,6 @@ function getRegioni() {
 		$stmt = $db->query($sql);  
 		$regioni = $stmt->fetchAll(PDO::FETCH_OBJ);
 		$db = null;
-		// echo '{"wine": ' . json_encode($wines) . '}';
 		echo json_encode($regioni);
 	} catch(PDOException $e) {
 		echo '{"error":{"text":'. $e->getMessage() .'}}'; 
@@ -42,79 +43,29 @@ function getRegione($id) {
 	}
 }
 
-function addWine() {
-	error_log('addWine\n', 3, '/var/tmp/php.log');
-	$request = Slim::getInstance()->request();
-	$wine = json_decode($request->getBody());
-	$sql = "INSERT INTO wine (name, grapes, country, region, year, description, picture) VALUES (:name, :grapes, :country, :region, :year, :description, :picture)";
+function getProvince(){
+	$sql = "SELECT idArea, idRegione, idProvincia, DescProvincia, Sigla FROM aff_aree_regioni_province GROUP BY idArea, idRegione, idProvincia, DescProvincia, Sigla ORDER BY idRegione, idProvincia";
 	try {
 		$db = getConnection();
-		$stmt = $db->prepare($sql);  
-		$stmt->bindParam("name", $wine->name);
-		$stmt->bindParam("grapes", $wine->grapes);
-		$stmt->bindParam("country", $wine->country);
-		$stmt->bindParam("region", $wine->region);
-		$stmt->bindParam("year", $wine->year);
-		$stmt->bindParam("description", $wine->description);
-		$stmt->bindParam("picture", $wine->picture);
-		$stmt->execute();
-		$wine->id = $db->lastInsertId();
+		$stmt = $db->query($sql);  
+		$province = $stmt->fetchAll(PDO::FETCH_OBJ);
 		$db = null;
-		echo json_encode($wine); 
-	} catch(PDOException $e) {
-		error_log($e->getMessage(), 3, '/var/tmp/php.log');
-		echo '{"error":{"text":'. $e->getMessage() .'}}'; 
-	}
-}
-
-function updateWine($id) {
-	$request = Slim::getInstance()->request();
-	$body = $request->getBody();
-	$wine = json_decode($body);
-	$sql = "UPDATE wine SET name=:name, grapes=:grapes, country=:country, region=:region, year=:year, description=:description, picture=:picture WHERE id=:id";
-	try {
-		$db = getConnection();
-		$stmt = $db->prepare($sql);  
-		$stmt->bindParam("name", $wine->name);
-		$stmt->bindParam("grapes", $wine->grapes);
-		$stmt->bindParam("country", $wine->country);
-		$stmt->bindParam("region", $wine->region);
-		$stmt->bindParam("year", $wine->year);
-		$stmt->bindParam("description", $wine->description);
-		$stmt->bindParam("picture", $wine->picture);
-		$stmt->bindParam("id", $id);
-		$stmt->execute();
-		$db = null;
-		echo json_encode($wine); 
+		echo json_encode($province);
 	} catch(PDOException $e) {
 		echo '{"error":{"text":'. $e->getMessage() .'}}'; 
 	}
 }
 
-function deleteWine($id) {
-	$sql = "DELETE FROM wine WHERE id=:id";
+function getProvincia($id){
+	$sql = "SELECT * FROM aff_aree_regioni_province WHERE idProvincia=:id";
 	try {
 		$db = getConnection();
 		$stmt = $db->prepare($sql);  
-		$stmt->bindParam("id", $id);
+		$stmt->bindParam("idProvincia", $id);
 		$stmt->execute();
+		$provincia = $stmt->fetchObject();  
 		$db = null;
-	} catch(PDOException $e) {
-		echo '{"error":{"text":'. $e->getMessage() .'}}'; 
-	}
-}
-
-function findByName($query) {
-	$sql = "SELECT * FROM wine WHERE UPPER(name) LIKE :query ORDER BY name";
-	try {
-		$db = getConnection();
-		$stmt = $db->prepare($sql);
-		$query = "%".$query."%";  
-		$stmt->bindParam("query", $query);
-		$stmt->execute();
-		$wines = $stmt->fetchAll(PDO::FETCH_OBJ);
-		$db = null;
-		echo json_encode($wines);
+		echo json_encode($provincia); 
 	} catch(PDOException $e) {
 		echo '{"error":{"text":'. $e->getMessage() .'}}'; 
 	}

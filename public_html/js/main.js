@@ -19,15 +19,21 @@ var AppRouter = Backbone.Router.extend({
     },
     db_menu: function(){
         var regionsCollection = new RegionsCollection();
+        //var provincesCollection = new ProvincesCollection();
         regionsCollection.fetch({
             success: function(){
                 $("#contenitore").append(new SelectForm({model: regionsCollection}).el);
             }
-        });
+        }); /*
+        provincesCollection.fetch({
+            success: function(){
+                $("#contenitore").append(new SelectForm({model: provincesCollection}).el);
+            }
+        }); */
     }
 });
 
-utils.loadTemplate(['HeaderView', 'menu_Map', 'googleMap', 'SelectForm', 'RegionItem'], function () {
+utils.loadTemplate(['HeaderView', 'menu_Map', 'googleMap', 'SelectForm', 'RegionItem', 'ProvinceItem'], function () {
     app = new AppRouter();
     Backbone.history.start();
 });
