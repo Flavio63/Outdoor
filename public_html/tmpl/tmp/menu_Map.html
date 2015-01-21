@@ -1,0 +1,44 @@
+<ul class="nav navbar-nav">
+    <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Manager Data <b class="caret"></b></a>
+        <ul class="dropdown-menu" role="menu">
+            <li><a id="setMarker" href="#">Carica file .csv x Impianti e POI</a></li>
+            <li class="disabled"><a id="linkDB" href="#">Carica file da DB</a></li>
+            <li class="disabled"><a id="saveAs" href="#">Save As &hellip;</a></li>
+            <li class="divider"></li>
+            <li><a id="eraseBilboards" href="#">Togli Impianti</a></li>
+            <li><a id="erasePOI" href="#">Togli POI</a></li>
+        </ul>
+    </li>
+    <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Calcolo Coordinate<b class="caret"></b></a>
+        <ul class="dropdown-menu" role="menu">
+            <li><a id="upLoadList" href="#">Carica elenco indirizzi</a></li>
+            <li class="disabled"><a id="eraseList" href="#">Cancella elenco indirizzi</a></li>
+        </ul>
+    </li>
+    <li class="navbar-btn">
+        <input id="raggio" value="500" style="width: 32px; text-align: right;">
+    </li>
+</ul>
+<ul class="nav navbar-nav navbar-right">
+    <li><a href=""><span class="glyphicon glyphicon-info-sign"></span> About</a></li>
+    <li><a href=""><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+</ul>
+<ul class="nav navbar-nav navbar-right navbar-btn">
+    <li style="padding-left: 10px;"><img id="logoPoi" style="width: 32px;"/></li>
+</ul>
+<ul class="nav navbar-nav navbar-right navbar-btn" style="width:150px;">
+    <li>
+        <input type="file" data-buttonText=". Carica img POI" id="upLoadLogo" class="filestyle" name="file[]" accept="image/*"
+               tabindex="-1" style="position: absolute; clip: rect(0px 0px 0px 0px);">
+        <div class="bootstrap-filestyle input-group">
+            <span class="group-span-filestyle input-group-btn" tabindex="0">
+                <label for="upLoadLogo" class="btn btn-default">
+                    <span class="glyphicon glyphicon-folder-open"></span>
+                       . Carica img POI
+                </label>
+            </span>
+        </div>
+    </li>
+</ul>
