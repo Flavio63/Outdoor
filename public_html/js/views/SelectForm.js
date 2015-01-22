@@ -32,6 +32,7 @@ window.SelectForm = Backbone.View.extend({
                 resultLi.children().remove();
                 $(".ui-selected", this).each(function () {
                 resultLi.append('<li class="region">' + $(this).text() + '</li>');
+                console.info('idRegione: ' + this.id);
             });
             }
         });
@@ -44,10 +45,7 @@ window.RegionItem = Backbone.View.extend({
     tagName: 'li',
     className: 'region',
     template:  _.template('<span><%= DescRegione %></span>'),
-    initialize: function(){
-        this.model.bind("change", this.render, this);
-        this.model.bind("destroy", this.close, this);
-    },
+    initialize: function(){},
     render: function(){
         var js = this.model.toJSON();
         $(this.el).attr('id', js.idRegione);
