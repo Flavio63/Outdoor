@@ -33,7 +33,7 @@ var AppRouter = Backbone.Router.extend({
     }
 });
 
-utils.loadTemplate(['HeaderView', 'menu_Map', 'SelectForm', 'RegionItem', 'ProvinceItem'], function () {
+utils.loadTemplate(['HeaderView', 'menu_Map', 'SelectForm', 'ProvinceItem'], function () {
     app = new AppRouter();
     Backbone.history.start();
 });

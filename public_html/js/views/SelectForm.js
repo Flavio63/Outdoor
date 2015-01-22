@@ -6,7 +6,7 @@ window.SelectForm = Backbone.View.extend({
         this.render();
     },
     events: {
-        
+        'click [type="li"]': 'clicked'
     },
     // this is handling DOM element
     jQueryClicked: function(event){
@@ -26,6 +26,7 @@ window.SelectForm = Backbone.View.extend({
             $('#regions', this.el).append(new RegionItem({model: regions[i]}).render().el);
         }
         $("#regions", this.el).selectable({
+            filter: 'li',
             stop: function(){
                 var resultLi = $("#regions-selected");
                 resultLi.children().remove();
@@ -42,13 +43,15 @@ window.SelectForm = Backbone.View.extend({
 window.RegionItem = Backbone.View.extend({
     tagName: 'li',
     className: 'region',
+    template:  _.template('<span><%= DescRegione %></span>'),
     initialize: function(){
         this.model.bind("change", this.render, this);
         this.model.bind("destroy", this.close, this);
     },
     render: function(){
         var js = this.model.toJSON();
-        $(this.el).data('areaRegion',{idArea:js.idArea, idRegione:js.idRegione});
+        $(this.el).attr('id', js.idRegione);
+        //$(this.el).data('areaRegion',{idArea:js.idArea, idRegione:js.idRegione});
         $(this.el).html( this.template( js ) );
         return this;
     }
