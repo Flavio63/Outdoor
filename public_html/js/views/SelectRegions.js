@@ -1,4 +1,4 @@
-window.SelectForm = Backbone.View.extend({
+window.SelectRegions = Backbone.View.extend({
     tagName: 'form',
     className: 'form-inline',
     initialize: function(){
@@ -20,7 +20,6 @@ window.SelectForm = Backbone.View.extend({
         var regions = this.model.models;
         var len = regions.length;
         $('#territorio', this.el).append('<ol id="regions" class="list"> </ol>');
-        //$('#territorio', this.el).append('<ol id="provinces" class="list"> </ol>');
         $("#territorio", this.el).accordion({collapsible: true, heightStyle: "content", active: false});        
         for (var i = 0; i < len; i++) {
             $('#regions', this.el).append(new RegionItem({model: regions[i]}).render().el);
@@ -49,7 +48,6 @@ window.RegionItem = Backbone.View.extend({
     render: function(){
         var js = this.model.toJSON();
         $(this.el).attr('id', js.idRegione);
-        //$(this.el).data('areaRegion',{idArea:js.idArea, idRegione:js.idRegione});
         $(this.el).html( this.template( js ) );
         return this;
     }

@@ -18,22 +18,12 @@ var AppRouter = Backbone.Router.extend({
         $("#googleMap").height($(window).height() - $("#googleMap").offset().top + ($("#googleMap").outerHeight(true) - $("#googleMap").height()));
     },
     db_menu: function(){
-        var regionsCollection = new RegionsCollection();
-        //var provincesCollection = new ProvincesCollection();
-        regionsCollection.fetch({
-            success: function(){
-                $("#contenitore").append(new SelectForm({model: regionsCollection}).el);
-            }
-        }); /*
-        provincesCollection.fetch({
-            success: function(){
-                $("#contenitore").append(new SelectForm({model: provincesCollection}).el);
-            }
-        }); */
+        this.panelForm = new PanelForm();
+        $('#contenitore').html(this.panelForm.el);
     }
 });
 
-utils.loadTemplate(['HeaderView', 'menu_Map', 'SelectForm', 'ProvinceItem'], function () {
+utils.loadTemplate(['HeaderView', 'menu_Map', 'PanelForm', 'SelectRegions'], function () {
     app = new AppRouter();
     Backbone.history.start();
 });
