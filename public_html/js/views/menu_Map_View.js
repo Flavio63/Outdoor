@@ -35,6 +35,10 @@ window.menu_Map = Backbone.View.extend({
 window.googleMap = Backbone.View.extend({
     tagName: 'div',
     id: 'googleMap',
+    template: function() {
+        var div = $('<div id="googleMap"></div>');
+        _.template(div.html());
+    },
     initialize: function(){
         this.render();
     },
@@ -48,7 +52,7 @@ window.googleMap = Backbone.View.extend({
         window.geocoder = new google.maps.Geocoder();
         $(window).resize(function(){
             $("#googleMap").height($(window).height() - $("#googleMap").offset().top + ($("#googleMap").outerHeight(true) - $("#googleMap").height()));
-        })
+        });
         $('#raggio').spinner({min: 250, max: 2500, step: 50, start: 500});
     },
     render: function(){

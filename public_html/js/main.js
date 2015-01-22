@@ -12,8 +12,8 @@ var AppRouter = Backbone.Router.extend({
         this.menu_map = new menu_Map();
         $('#menuMapNavBar').html(this.menu_map.el);
 
-        this.googlemap = new googleMap();
-        $('#contenitore').html(this.googlemap.el);
+        this.gmap = new googleMap();
+        $('#contenitore').html(this.gmap.el);
         $("#googleMap").show();
         $("#googleMap").height($(window).height() - $("#googleMap").offset().top + ($("#googleMap").outerHeight(true) - $("#googleMap").height()));
     },
@@ -33,7 +33,7 @@ var AppRouter = Backbone.Router.extend({
     }
 });
 
-utils.loadTemplate(['HeaderView', 'menu_Map', 'googleMap', 'SelectForm', 'RegionItem', 'ProvinceItem'], function () {
+utils.loadTemplate(['HeaderView', 'menu_Map', 'SelectForm', 'RegionItem', 'ProvinceItem'], function () {
     app = new AppRouter();
     Backbone.history.start();
 });
