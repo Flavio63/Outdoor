@@ -19,8 +19,8 @@ window.SelectRegions = Backbone.View.extend({
         $(this.el).html(this.template());
         var regions = this.model.models;
         var len = regions.length;
-        $('#territorio', this.el).append('<ol id="regions" class="list"> </ol>');
-        $("#territorio", this.el).accordion({collapsible: true, heightStyle: "content", active: false});        
+        $('#regioni', this.el).append('<ol id="regions" class="list"> </ol>');
+        $("#regioni", this.el).accordion({collapsible: true, heightStyle: "content", active: false});        
         for (var i = 0; i < len; i++) {
             $('#regions', this.el).append(new RegionItem({model: regions[i]}).render().el);
         }
