@@ -52,23 +52,3 @@ window.RegionItem = Backbone.View.extend({
         return this;
     }
 });
-
-window.ProvinceItem = Backbone.View.extend({
-    tagName: 'li',
-    className: 'province',
-    initialize: function(){
-        this.model.bind("click", this.clicked, this);
-    },
-    render: function(){
-        var js = this.model.toJSON();
-        $(this.el).data('province',{
-            idArea:js.idArea, 
-            idRegione:js.idRegione, 
-            idProvincia:js.idProvincia, 
-            descProvinca:js.descProvinca,
-            Sigla:js.Sigla
-        });
-        $(this.el).html( this.template( js ) );
-        return this;
-    }
-});

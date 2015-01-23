@@ -12,6 +12,6 @@ window.Provinces = new Backbone.Model.extend({
 });
 
 window.ProvincesCollection = new Backbone.Collection.extend({
-    urlRoot: "php/province",
+    url: "php/province",
     model: Provinces
 });
