@@ -1,5 +1,5 @@
 window.Provinces = new Backbone.Model.extend({
-    url: "php/province",
+    urlRoot: "php/province",
     initialize: function(){
         
     },

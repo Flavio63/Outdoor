@@ -47,8 +47,7 @@ function getProvince(){
 	$sql = "SELECT idArea, idRegione, idProvincia, DescProvincia, Sigla FROM aff_aree_regioni_province GROUP BY idArea, idRegione, idProvincia, DescProvincia, Sigla ORDER BY idRegione, idProvincia";
 	try {
 		$db = getConnection();
-                echo 'sono in getProvince()';
-		$stmt = $db->query($sql);
+		$stmt = $db->query($sql);  
 		$province = $stmt->fetchAll(PDO::FETCH_OBJ);
 		$db = null;
 		echo json_encode($province);
