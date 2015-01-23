@@ -1,7 +1,7 @@
-window.Provinces = new Backbone.Model.extend({
+window.Provinces = Backbone.Model.extend({
     urlRoot: "php/province",
     initialize: function(){
-        
+    
     },
     defaults: {
         idArea: "",
@@ -12,7 +12,7 @@ window.Provinces = new Backbone.Model.extend({
     }
 });
 
-window.ProvincesCollection = new Backbone.Collection.extend({
+window.ProvincesCollection = Backbone.Collection.extend({
     url: "php/province",
     model: Provinces
 });

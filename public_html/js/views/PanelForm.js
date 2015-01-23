@@ -5,13 +5,21 @@ window.PanelForm = Backbone.View.extend({
         this.render();
     },
     render: function(){
-        var regionsCollection = new RegionsCollection();
         $(this.el).html(this.template());
+        var regionsCollection = new RegionsCollection();
         regionsCollection.fetch({
             success: function(){
                 $(".panel-body").append(new SelectRegions({model: regionsCollection}).el);
             }
         });
+
+        var provincesCollection = new ProvincesCollection();
+        provincesCollection.fetch({
+            success: function(){
+                $(".panel-body").append(new SelectProvinces({model: provincesCollection}).el);
+            }
+        });
+
         return this;
     }
 });

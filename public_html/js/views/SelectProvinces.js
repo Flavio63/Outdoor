@@ -11,16 +11,16 @@ window.SelectProvinces = Backbone.View.extend({
         $('#terProvinces', this.el).append('<ol id="provinces" class="list"> </ol>');
         $("#terProvinces", this.el).accordion({collapsible: true, heightStyle: "content", active: false});        
         for (var i = 0; i < len; i++) {
-            $('#provinces', this.el).append(new ProvinceItem({model: regions[i]}).render().el);
+            $('#provinces', this.el).append(new ProvinceItem({model: provinces[i]}).render().el);
         }
         $("#regions", this.el).selectable({
             filter: 'li',
             stop: function(){
-                var resultLi = $("#regions-selected");
+                var resultLi = $("#provinces-selected");
                 resultLi.children().remove();
                 $(".ui-selected", this).each(function () {
-                resultLi.append('<li class="region">' + $(this).text() + '</li>');
-                console.info('idRegione: ' + this.id);
+                resultLi.append('<li class="province">' + $(this).text() + '</li>');
+                console.info('idProcinvia: ' + this.id);
             });
             }
         });
