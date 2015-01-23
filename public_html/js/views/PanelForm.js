@@ -16,6 +16,9 @@ window.PanelForm = Backbone.View.extend({
         provincesCollection.fetch({
             success: function(){
                 $(".panel-body").append(new SelectProvinces({model: provincesCollection}).el);
+            },
+            error: function(er){
+                console.error(er.toString());
             }
         });
         return this;
