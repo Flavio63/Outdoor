@@ -6,6 +6,7 @@ window.Provinces = new Backbone.Model.extend({
     defaults: {
         idArea: "",
         idRegione: "",
+        idProvincia: "",
         DescProvincia: "",
         Sigla: ""
     }
