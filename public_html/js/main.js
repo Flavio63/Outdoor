@@ -1,8 +1,7 @@
 var AppRouter = Backbone.Router.extend({
     routes: {
         "map_menu": "map_menu",
-        "db_menu": "db_menu",
-        "regioni/list": "list"
+        "db_menu": "db_menu"
     },
     initialize: function () {
         this.headerView = new HeaderView();
