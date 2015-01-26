@@ -1,6 +1,6 @@
 window.SelectRegions = Backbone.View.extend({
-    tagName: 'form',
-    className: 'form-inline',
+    tagName: 'div',
+    className: 'form-group',
     initialize: function(){
         this.$el.click(this.jQueryClicked);
         this.render();

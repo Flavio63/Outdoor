@@ -1,6 +1,6 @@
 window.SelectProvinces = Backbone.View.extend({
-    tagName: 'form',
-    className: 'form-inline',
+    tagName: 'div',
+    className: 'form-group',
     initialize: function(){
         this.render();
     },
@@ -13,7 +13,7 @@ window.SelectProvinces = Backbone.View.extend({
         for (var i = 0; i < len; i++) {
             $('#provinces', this.el).append(new ProvinceItem({model: provinces[i]}).render().el);
         }
-        $("#regions", this.el).selectable({
+        $("#provinces", this.el).selectable({
             filter: 'li',
             stop: function(){
                 var resultLi = $("#provinces-selected");

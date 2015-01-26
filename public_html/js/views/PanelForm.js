@@ -6,17 +6,18 @@ window.PanelForm = Backbone.View.extend({
     },
     render: function(){
         $(this.el).html(this.template());
+        
         var regionsCollection = new RegionsCollection();
         regionsCollection.fetch({
             success: function(){
-                $(".panel-body").append(new SelectRegions({model: regionsCollection}).el);
+                $('.form-inline').append(new SelectRegions({model: regionsCollection}).el);
             }
         });
 
         var provincesCollection = new ProvincesCollection();
         provincesCollection.fetch({
             success: function(){
-                $(".panel-body").append(new SelectProvinces({model: provincesCollection}).el);
+                $('.form-inline').append(new SelectProvinces({model: provincesCollection}).el);
             }
         });
 
