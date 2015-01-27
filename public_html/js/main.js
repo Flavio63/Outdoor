@@ -8,9 +8,8 @@ var AppRouter = Backbone.Router.extend({
         $('#fvNavBar').html(this.headerView.el);
         $.ajaxPrefilter( function( options, originalOptions, jqXHR){
             options.emulateJSON = true;
-            options.xhrFields = {withCredentials:true};
             options.crossDomain = true;
-            options.url = 'http://flavilla.altervista.org/lib/' + options.url;
+            options.url = 'http://flavilla.altervista.org/lib/php/index.' + options.url;
         });
     },
     map_menu: function(){
