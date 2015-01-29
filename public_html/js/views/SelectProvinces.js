@@ -13,36 +13,39 @@ window.SelectProvinces = Backbone.View.extend({
         for (var i = 0; i < len; i++) {
             $('#provinces', this.el).append(new ProvinceItem({model: provinces[i]}).render().el);
         }
-        $("#provinces", this.el).selectable({
-            filter: 'li',
-            stop: function(){
-                var resultLi = $("#provinces-selected");
-                resultLi.children().remove();
-                $(".ui-selected", this).each(function () {
-                resultLi.append('<li class="province">' + $(this).text() + '</li>');
-                console.info('idProcinvia: ' + this.id);
-            });
-            }
-        });
+        $("#provinces", this.el).selectable(this.selections);
         return this;
+    },
+    selections: {
+        stop: function (e) {
+            var resultLi = $("#provinces-selected");
+            resultLi.children().remove();
+            $(".ui-selected", this).each(function () {
+            var a = $(this).attr('idarea'), b = $(this).attr('idregione'),
+                    c = $(this).attr('id'), d = $(this).attr('descprovincia'),
+                    e = $(this).attr('sigla');
+                resultLi.append('<li class="province">' + a + ">" + b + ">" + c + ">" + d + ">" + e + '</li>');
+            });
+
+        }
     }
-    
+
 });
 
 window.ProvinceItem = Backbone.View.extend({
     tagName: 'li',
     className: 'province',
-    template: _.template('<span><%= DescProvincia %> (<%= Sigla %>)</span>'),
+    template: _.template('<%= DescProvincia %> (<%= Sigla %>)'),
     initialize: function(){},
     render: function(){
         var js = this.model.toJSON();
         $(this.el).attr('id', js.idProvincia);
-        $(this.el).attr('data-province',{
-            idArea:js.idArea, 
-            idRegione:js.idRegione, 
-            idProvincia:js.idProvincia, 
-            descProvinca:js.descProvinca,
-            Sigla:js.Sigla
+        $(this.el).attr({
+            idarea:js.idArea, 
+            idregione:js.idRegione, 
+            idprovincia:js.idProvincia, 
+            descprovincia:js.DescProvincia,
+            sigla:js.Sigla
         });
         $(this.el).html( this.template( js ) );
         return this;
