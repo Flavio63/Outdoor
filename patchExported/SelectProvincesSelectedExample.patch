@@ -1,0 +1,82 @@
+diff --git a/public_html/js/views/SelectProvinces.js b/public_html/js/views/SelectProvinces.js
+index 2c2a534..36b6b14 100644
+--- a/public_html/js/views/SelectProvinces.js
++++ b/public_html/js/views/SelectProvinces.js
+@@ -13,18 +13,37 @@
+         for (var i = 0; i < len; i++) {
+             $('#provinces', this.el).append(new ProvinceItem({model: provinces[i]}).render().el);
+         }
+-        $("#provinces", this.el).selectable({
+-            filter: 'li',
+-            stop: function(){
+-                var resultLi = $("#provinces-selected");
+-                resultLi.children().remove();
+-                $(".ui-selected", this).each(function () {
+-                resultLi.append('<li class="province">' + $(this).text() + '</li>');
+-                console.info('idProvincia: ' + this.id);
+-            });
+-            }
+-        });
++        $("#provinces", this.el).selectable(this.selections);
+         return this;
++    },
++    selections: {
++        selected: function(e, ui){
++            var a = $(e.toElement).attr('idarea'), b = $(e.toElement).attr('idregione'),
++                    c = $(e.toElement).attr('id'), d = $(e.toElement).attr('descprovincia'),
++                    e = $(e.toElement).attr('sigla');
++            console.info("this item: " + a + "-" + b + "-" + c + "-" + d + "-" + e);
++            console.info("2");
++        },
++        unselected: function(e,ui){
++            var a = $(e.toElement).attr('idarea'), b = $(e.toElement).attr('idregione'), c = $(e.toElement).attr('id'),
++                    d = $(e.toElement).attr('descprovincia'), e = $(e.toElement).attr('sigla');
++            console.info("this item: " + a + "-" + b + "-" + c + "-" + d + "-" + e);
++            console.info("b");
++        },
++        start: function(e){
++            var a = $(e.toElement).attr('idarea'), b = $(e.toElement).attr('idregione'),
++                    c = $(e.toElement).attr('id'), d = $(e.toElement).attr('descprovincia'),
++                    e = $(e.toElement).attr('sigla');
++            console.info("this item: " + a + "-" + b + "-" + c + "-" + d + "-" + e);
++            console.info("1");
++        },
++        stop: function(e){
++            var a = $(e.toElement).attr('idarea'), b = $(e.toElement).attr('idregione'),
++                    c = $(e.toElement).attr('id'), d = $(e.toElement).attr('descprovincia'),
++                    e = $(e.toElement).attr('sigla');
++            console.info("this item: " + a + "-" + b + "-" + c + "-" + d + "-" + e);
++            console.info("3");
++        }
+     }
+     
+ });
+@@ -32,18 +51,21 @@
+ window.ProvinceItem = Backbone.View.extend({
+     tagName: 'li',
+     className: 'province',
+-    template: _.template('<span><%= DescProvincia %> (<%= Sigla %>)</span>'),
++    template: _.template('<%= DescProvincia %> (<%= Sigla %>)'),
+     initialize: function(){},
+     render: function(){
+         var js = this.model.toJSON();
+         $(this.el).attr('id', js.idProvincia);
+-        $(this.el).attr('data-province',{
+-            idArea:js.idArea, 
+-            idRegione:js.idRegione, 
+-            idProvincia:js.idProvincia, 
+-            descProvinca:js.descProvinca,
+-            Sigla:js.Sigla
++        //$(this.el).attr('idarea', js.idArea);
++        
++        $(this.el).attr({
++            idarea:js.idArea, 
++            idregione:js.idRegione, 
++            idprovincia:js.idProvincia, 
++            descprovincia:js.DescProvincia,
++            sigla:js.Sigla
+         });
++        
+         $(this.el).html( this.template( js ) );
+         return this;
+     }

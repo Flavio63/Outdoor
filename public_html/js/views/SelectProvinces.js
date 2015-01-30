@@ -18,9 +18,17 @@ window.SelectProvinces = Backbone.View.extend({
     },
     selections: {
         stop: function (e) {
+            selProv = [];
             var resultLi = $("#provinces-selected");
             resultLi.children().remove();
             $(".ui-selected", this).each(function () {
+                selProv.push({
+                    idArea: $(this).attr('idarea'),
+                    idRegione: $(this).attr('idregione'),
+                    idProvincia: $(this).attr('id'),
+                    DescProvincia: $(this).attr('descprovincia'),
+                    Sigra: $(this).attr('sigla')
+                });
             var a = $(this).attr('idarea'), b = $(this).attr('idregione'),
                     c = $(this).attr('id'), d = $(this).attr('descprovincia'),
                     e = $(this).attr('sigla');
@@ -31,7 +39,7 @@ window.SelectProvinces = Backbone.View.extend({
     }
 
 });
-
+var selProv = [];
 window.ProvinceItem = Backbone.View.extend({
     tagName: 'li',
     className: 'province',
