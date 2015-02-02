@@ -6,7 +6,7 @@ window.SelectRegions = Backbone.View.extend({
         this.render();
     },
     events: {
-        'click #territorio': 'clicked'
+        //'click #territorio': 'clicked'
     },
     // this is handling DOM element
     jQueryClicked: function(event){
@@ -29,7 +29,7 @@ window.SelectRegions = Backbone.View.extend({
     },
     selections: {
         stop: function (e) {
-            selReg = [];
+            var selReg = [];
             var resultLi = $("#regions-selected");
             resultLi.children().remove();
             $(".ui-selected", this).each(function () {
@@ -41,12 +41,12 @@ window.SelectRegions = Backbone.View.extend({
             var t = $(this).attr('idarea') + ">" + $(this).attr('id') + ">" + $(this).attr('descregione');
                 resultLi.append('<li class="region">' + t + '</li>');
             });
-
+            window.app.navigate('regioni:id', {trigger: true});
+            window.app.vents.trigger("someEvent", selReg);
         }
     }
     
 });
-var selReg = [];
 
 window.RegionItem = Backbone.View.extend({
     tagName: 'li',

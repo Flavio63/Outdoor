@@ -29,5 +29,6 @@ var AppRouter = Backbone.Router.extend({
 
 utils.loadTemplate(['HeaderView', 'menu_Map', 'PanelForm', 'SelectRegions', 'SelectProvinces'], function () {
     app = new AppRouter();
+    window.app.vents = _.extend({}, Backbone.Events);
     Backbone.history.start();
 });

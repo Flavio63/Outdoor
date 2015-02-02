@@ -2,6 +2,7 @@ window.SelectProvinces = Backbone.View.extend({
     tagName: 'div',
     className: 'form-group',
     initialize: function(){
+        this.listenTo(window.app.vents, "someEvent", this.handledOtherView);
         this.render();
     },
     render: function(){
@@ -36,6 +37,9 @@ window.SelectProvinces = Backbone.View.extend({
             });
 
         }
+    },
+    handledOtherView: function(e){
+        console.log(JSON.stringify(e));
     }
 
 });

@@ -1,6 +1,4 @@
 window.Regions = Backbone.Model.extend({
-    //urlRoot: "php/regioni",
-
     initialize: function () {
     },
 

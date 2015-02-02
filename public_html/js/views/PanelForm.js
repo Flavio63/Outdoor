@@ -17,7 +17,7 @@ window.PanelForm = Backbone.View.extend({
             }
         });
 
-        var provincesCollection = new ProvincesCollection();
+        var provincesCollection = new ProvincesCollection({id:1});
         provincesCollection.fetch({
             success: function(){
                 $('.form-inline').append(new SelectProvinces({model: provincesCollection}).el);
