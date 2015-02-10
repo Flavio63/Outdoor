@@ -10,6 +10,7 @@ var AppRouter = Backbone.Router.extend({
             options.emulateJSON = true;
             options.crossDomain = true;
             options.url = options.url;
+            //options.url = 'http://flavilla.altervista.org/lib/php/index.' + options.url;
         });
     },
     map_menu: function(){
