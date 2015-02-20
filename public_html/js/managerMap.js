@@ -70,10 +70,11 @@ function selectMarker(typePosition) {
 
 function markerEvent(marker){
     google.maps.event.addListener(marker, 'click', function () {
-        window.fvMap.setZoom(14);
+        //window.fvMap.setZoom(14);
         window.fvMap.setCenter(marker.getPosition());
         marker.info.open(window.fvMap, marker);
         if (marker.type === 'poi') {
+            window.fvMap.setZoom(14);
             if ($.inArray(marker.getPosition(), arrCirclePosition) === -1) {
                 addCircle(marker.getPosition());
             }
