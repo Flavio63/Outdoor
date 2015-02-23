@@ -54,9 +54,9 @@ function addMarkerImp(dati){
 
 
 function selectMarker(typePosition) {
-    var medioF = 'Images/marker/medioFormato.png';
-    var poster = 'Images/marker/poster.png';
-    var altro = 'Images/marker/altro.png';
+    var medioF = 'images/marker/medioFormato.png';
+    var poster = 'images/marker/poster.png';
+    var altro = 'images/marker/altro.png';
     if (typeof (typePosition) !== 'undefined') {
         if (typePosition.substring(6, 0) === 'MEDIOF') {
             return medioF;
