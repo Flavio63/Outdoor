@@ -190,7 +190,7 @@ window.utils = {
                         for (var cInt = 0; cInt < record.length; cInt++) {
                             arrInt[cInt] = record[cInt];
                         }
-                        if (arrInt[0] !== 'latitude Ovest-Est' && arrInt[7] !== 'GL_XCOORD') {
+                        if (arrInt[0] !== 'latitude Ovest-Est' && arrInt[8] !== 'gl_xcoord') {
                             alert("Il file caricato non sembra corretto.");
                             return;
                         }
@@ -206,7 +206,7 @@ window.utils = {
                 if (arrInt[0] === 'latitude Ovest-Est') {
                     addMarkerPOI(arrVal);
                     alert("Ho caricato " + nRec + " record.");
-                } else if (arrInt[7] === 'GL_XCOORD') {
+                } else if (arrInt[8] === 'gl_xcoord') {
                     addMarkerImp(arrVal);
                     alert("Ho caricato " + nRec + " record.");
                 }
