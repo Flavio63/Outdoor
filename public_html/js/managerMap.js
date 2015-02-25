@@ -267,3 +267,11 @@ function codeAddress(addressList) {
         }
     }, 1000);
 }
+function goToAddress(address){
+    geocoder.geocode({'address': address}, function (results, status) {
+        if (status === google.maps.GeocoderStatus.OK){
+            window.fvMap.setCenter(results[0].geometry.location);
+            window.fvMap.setZoom(16);
+        }
+    });
+}
