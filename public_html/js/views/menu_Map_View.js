@@ -15,7 +15,8 @@ window.menu_Map = Backbone.View.extend({
     },
     events: {
         'click li a': "clicked",
-        'change #upLoadLogo': "getLogo"
+        'change #upLoadLogo': "getLogo",
+        'click #searchAddress': "searchAddress"
     },
     clicked: function (e) {
         utils.handleClickEvent(e);
@@ -30,6 +31,9 @@ window.menu_Map = Backbone.View.extend({
             reader.readAsDataURL(e.currentTarget.files[0]);
         }
     },
+    searchAddress: function(e){
+        goToAddress($('#addressToSearch')[0].value);
+    }
 });
 
 window.googleMap = Backbone.View.extend({
