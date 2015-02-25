@@ -165,7 +165,7 @@ window.utils = {
             $("#upLoadList").parent().removeClass("disabled");
             $("#eraseList").parent().addClass("disabled");
         } else if (e.currentTarget['attributes'][0].value === "upLoadList") {
-            var up = $('<input type="file" name="file[]" id="indirizzi" accept=".txt"/>');
+            var up = $('<input type="file" name="file[]" id="indirizzi" accept=".csv"/>');
             $('body').append(up);
             document.getElementById('indirizzi').addEventListener('change', this.uploadList, false);
             $("#indirizzi").trigger('click');
@@ -219,7 +219,33 @@ window.utils = {
             var reader = new FileReader();
             // the event and its function
             reader.onload = function (evt) {
-                codeAddress(evt.target.result.split("\r"));
+
+                evt.target.result.replace("\r","");
+                var records = evt.target.result.split("\n");
+                var arrInt = [];
+                var arrVal = [];
+                var nRec = 0;
+                for (var r = 0; r < records.length; r++) {
+                    var record = records[r].split(';');
+                    if (r === 0) {
+                        for (var cInt = 0; cInt < record.length; cInt++) {
+                            arrInt[cInt] = record[cInt];
+                        }
+                        if (arrInt[8] !== 'gl_xcoord') {
+                            alert("Il file caricato non sembra corretto.");
+                            return;
+                        }
+                    } else {
+                        var item = {};
+                        for (var c = 0; c < record.length; c++) {
+                            item[arrInt[c]] = record[c];
+                        }
+                        arrVal.push(item);
+                    }
+                    nRec++;
+                }
+                
+                codeAddress(arrVal);
             };
             reader.readAsBinaryString(e.target.files.item(0));
         }
