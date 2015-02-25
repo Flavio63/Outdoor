@@ -38,14 +38,20 @@ function addMarkerImp(dati) {
     var marker;
     for (var r = 0; r < dati.length; r++) {
         var content = '<div class="contentIMP"><b>' + dati[r]['societa'] + '</b> - ' + dati[r]['tipo_impianto_dett'] + '</br>' +
-                dati[r]['indirizzo'] + ', ' + dati[r]['comune'] + '( ' + dati[r]['prov'] + ' )</br>' + 
+                dati[r]['indirizzo'] + ', ' + dati[r]['comune'] + ' ( ' + dati[r]['prov'] + ' )</br>' +
                 '<i>Longitudine: ' + dati[r]['gl_xcoord'] + ' Latitudine: ' + dati[r]['gl_ycoord'] + '</i></div>';
         marker = new google.maps.Marker({
             position: new google.maps.LatLng(utils.changeStringToNumber(dati[r]['gl_ycoord']), utils.changeStringToNumber(dati[r]['gl_xcoord'])),
             icon: selectMarker(dati[r]['tipo_impianto_sint']),
             draggable: false,
             type: 'impianti',
-            info: new google.maps.InfoWindow({content: content})
+            info: new google.maps.InfoWindow({content: content}),
+            flaVi: '<tr><td>' + dati[r]['societa'] + '</td><td>' + dati[r]['audiposter'] + '</td><td>' + dati[r]['indirizzo'] + '</td><td>' + dati[r]['comune'] + '</td><td>' + 
+                    dati[r]['prov'] + '</td><td>' + dati[r]['tipo_impianto_dett'] + '</td><td>' + dati[r]['regione'] + '</td><td>' + 
+                    dati[r]['circuito'] + '</td><td>' + dati[r]['gl_xcoord']  + '</td><td>' + dati[r]['gl_ycoord'] + '</td><td>' + 
+                    dati[r]['distanza'] + '</td><td>' + dati[r]['numero'] + '</td><td>' + dati[r]['tipo_impianto_sint'] + '</td><td>' + 
+                    dati[r]['costi_listino'] + '</td><td>' + dati[r]['lux'] + '</td><td>' + dati[r]['qp_citta'] + '</td><td>' + 
+                    dati[r]['qp_circuito'] + '</td><td>' + dati[r]['qp_impianto'] + '</td><td>' + dati[r]['cimasa'] + '</td><td>' + dati[r]['inpe'] + '</td><td>' + dati[r]['note'] + '</td></tr>'
         });
         marker.fvCenter = marker.getPosition();
         markerEvent(marker);
@@ -72,7 +78,7 @@ function selectMarker(typePosition) {
 
 function markerEvent(marker) {
     google.maps.event.addListener(marker, 'click', function () {
-        //window.fvMap.setZoom(14);
+//window.fvMap.setZoom(14);
         window.fvMap.setCenter(marker.getPosition());
         marker.info.open(window.fvMap, marker);
         if (marker.type === 'poi') {
@@ -129,7 +135,6 @@ function addCircle(position) {
         //infoModal("infoMap", "raggio in metri: " + myCircle.getRadius());
         //+ myCircle.getCenter() + "<br> nbounds: " + myCircle.getBounds());
     });
-
     google.maps.event.addListener(myCircle, 'rightclick', function () {
         //show the modal with the info
         removeCircle(myCircle.getCenter());
@@ -147,16 +152,16 @@ function removeCircle(position) {
 }
 
 function mapEvent() {
-    //google.maps.event.addListener(map, 'click', function () { alert('hai cliccato la mappa'); });    
+//google.maps.event.addListener(map, 'click', function () { alert('hai cliccato la mappa'); });    
 }
 
 function setMarkerOnMap(arrMarker) {
-    //var bounds = new google.maps.LatLngBounds();
+//var bounds = new google.maps.LatLngBounds();
     for (var m = 0; m < arrMarker.length; m++) {
         arrMarker[m].setMap(window.fvMap);
         //bounds.extend(arrMarker[m].position);
     }
-    //map.fitBounds(bounds);
+//map.fitBounds(bounds);
 }
 function eraseMarker(type) {
     if (type === "POI") {
@@ -178,7 +183,7 @@ function eraseMarker(type) {
     } else if (type === "List") {
         arrAddresses.forEach(function (row) {
             row['marker'].setMap(null);
-        });/*
+        }); /*
          for (var l = 0; l < arrAddresses.length; l++){
          arrAddresses[l].setMap(null);
          }*/
@@ -188,10 +193,15 @@ function eraseMarker(type) {
 
 function getMarker(myCircle) {
     var n = 0;
-    var d = '<table class="table" id="infoTable"><tr><th>Società</th><th>Tipo Impianto</th><th>Indirizzo</th><th>Lat.</th><th>Long.</th></tr>';
+    var d = '<table class="table" id="infoTable">' +
+            '<tr><th>societa</th><th>audiposter</th><th>indirizzo</th><th>comune</th>' +
+            '<th>prov</th><th>tipo_impianto_dett</th><th>regione</th><th>circuito</th>' +
+            '<th>gl_xcoord</th><th>gl_ycoord</th><th>distanza</th><th>numero</th><th>tipo_impianto_sint</th>' +
+            '<th>costi_listino</th><th>lux</th><th>qp_citta</th><th>qp_circuito</th>' +
+            '<th>qp_impianto</th><th>cimasa</th><th>inpe</th><th>note</th></tr>'
     for (var i = 0; i < arrImp.length; i++) {
         if (myCircle.contains(arrImp[i].getPosition())) {
-            d += arrImp[i]['info']['content'];
+            d += arrImp[i]['flaVi'];
             n++;
         }
     }
@@ -204,7 +214,7 @@ function getMarkerNewPosition() {
     d += '<tr><th>Lat</th><th>Long</th><th>Lat</th><th>Long</th></tr>';
     var n = 0;
     for (var i = 0; i < newPoi.length; i++) {
-        //markerInArray(newPoi[i], arrPoi)
+//markerInArray(newPoi[i], arrPoi)
         var t = newPoi[i]['info']['content'];
         d += '<tr><td>' + t.substr(28, (t.indexOf("</b>") - 28)) +
                 '</td><td>' + t.substr(t.indexOf("</br>") + 5, t.indexOf("</br>", t.indexOf("</br>") + 5) - t.indexOf("</br>") - 5) +
@@ -219,29 +229,36 @@ function getMarkerNewPosition() {
 //'<div class="contentPOI" ><b>' + dati[r]['DESCRIZIONE'] + '</b></br>'
 //+ dati[r]['INDIRIZZO'] + '</br>' + dati[r]['COMUNE'] + '</div>'
 function codeAddress(addressList) {
-    var t = '<table class="table" id="infoTable"><tr><th>Indirizzo</th><th>Lat.</th><th>Long.</th></tr>';
+    var t = '<table class="table" id="infoTable">' +
+            '<tr><th>societa</th><th>audiposter</th><th>indirizzo</th><th>comune</th>' +
+            '<th>prov</th><th>tipo_impianto_dett</th><th>regione</th><th>circuito</th>' +
+            '<th>gl_xcoord</th><th>gl_ycoord</th><th>distanza</th><th>numero</th><th>tipo_impianto_sint</th>' +
+            '<th>costi_listino</th><th>lux</th><th>qp_citta</th><th>qp_circuito</th>' +
+            '<th>qp_impianto</th><th>cimasa</th><th>inpe</th><th>note</th></tr>';
     var x = 0;
     var no = 0;
     for (var i = 0; i < addressList.length; i++) {
-        geocoder.geocode({'address': addressList[i]}, function (results, status) {
-            if (status === google.maps.GeocoderStatus.OK) {
-                //map.setCenter(results[0].geometry.location);
-                var marker = new google.maps.Marker({
-                    map: window.fvMap,
-                    position: results[0].geometry.location
-                });
-                t += '<tr><td>' + results[0].formatted_address +
-                        '</td><td>' + utils.changeStringToNumber(marker.getPosition().lat(), ',') +
-                        '</td><td>' + utils.changeStringToNumber(marker.getPosition().lng(), ',') +
-                        '</td></tr>';
+            var address = addressList[i]['indirizzo'] + ' ' + addressList[i]['comune'] + ' ' + addressList[i]['prov'];
+            geocoder.geocode({'address': address}, function (results, status) {
+                if (status === google.maps.GeocoderStatus.OK) {
+                    var marker = new google.maps.Marker({
+                        map: window.fvMap,
+                        position: results[0].geometry.location
+                    });
+                t += '<tr>' + '<td>' + '</td>' + '<td>' + '</td>' +
+                        '<td>' + results[0].formatted_address + 
+                        '</td>' + '<td>' + '</td>' + '<td>' + '</td>' + '<td>' + '</td>' + '<td>' + '</td>' + '<td>' + '</td>' +
+                        '<td>' + utils.changeStringToNumber(marker.getPosition().lat(), ',') + '</td>' +
+                        '<td>' + utils.changeStringToNumber(marker.getPosition().lng(), ',') + '</td>' +
+                        '</tr>';
                 x++;
                 arrAddresses.push({address: results[0].formatted_address, marker: marker});
             } else {
                 x++;
                 no++;
-            }
-        });
-    }
+                }
+            });
+        }
     var xy = setInterval(function () {
         if (addressList.length === x) {
             t += '</table>';
