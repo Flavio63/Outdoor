@@ -180,7 +180,8 @@ window.utils = {
             var reader = new FileReader();
             // the event and its function
             reader.onload = function (evt) {
-                var records = evt.target.result.split("\n");
+                var l = evt.target.result.replace(/[\r]/g, "");
+                var records = l.split("\n");
                 var arrInt = [];
                 var arrVal = [];
                 var nRec = 0;
@@ -199,16 +200,18 @@ window.utils = {
                         for (var c = 0; c < record.length; c++) {
                             item[arrInt[c]] = record[c];
                         }
-                        arrVal.push(item);
+                        if (item['gl_xcoord'] !== "" && item['gl_xcoord'] !== "undefined") {
+                            arrVal.push(item);
+                            nRec++;
+                        }
                     }
-                    nRec++;
                 }
                 if (arrInt[0] === 'latitude Ovest-Est') {
                     addMarkerPOI(arrVal);
-                    alert("Ho caricato " + nRec + " record.");
+                    alert("Ho caricato " + nRec-1 + " record.");
                 } else if (arrInt[8] === 'gl_xcoord') {
                     addMarkerImp(arrVal);
-                    alert("Ho caricato " + nRec + " record.");
+                    alert("Ho caricato " + nRec -1 + " record.");
                 }
             };
             reader.readAsBinaryString(e.target.files.item(0));
@@ -219,9 +222,8 @@ window.utils = {
             var reader = new FileReader();
             // the event and its function
             reader.onload = function (evt) {
-
-                evt.target.result.replace("\r","");
-                var records = evt.target.result.split("\n");
+                var l = evt.target.result.replace(/[\r]/g, "");
+                var records = l.split("\n");
                 var arrInt = [];
                 var arrVal = [];
                 var nRec = 0;
@@ -244,7 +246,7 @@ window.utils = {
                     }
                     nRec++;
                 }
-                
+
                 codeAddress(arrVal);
             };
             reader.readAsBinaryString(e.target.files.item(0));
@@ -289,9 +291,10 @@ window.utils = {
                     session.address = "";
                     for (var row = 0; row < tab.rows.length; row++) {
                         for (var col = 0; col < tab.rows[row].cells.length; col++) {
-                            session.address += tab.rows[row].cells[col].innerText + "; "; // + tab.rows[row].cells[1].innerText + "; " + tab.rows[row].cells[2].innerText + "\n";
+                            session.address += tab.rows[row].cells[col].innerText + ";"; // + tab.rows[row].cells[1].innerText + "; " + tab.rows[row].cells[2].innerText + "\n";
                         }
-                        session.address += "\n";
+                        session.address = session.address.substring(0, session.address.length - 1);
+                        session.address += "\r\n";
                     }
                     btn.addEventListener('click', function (event) {
                         event.preventDefault();
