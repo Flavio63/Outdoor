@@ -39,6 +39,7 @@ function addMarkerImp(dati) {
     for (var r = 0; r < dati.length; r++) {
         var content = '<div class="contentIMP"><b>' + dati[r]['societa'] + '</b> - ' + dati[r]['tipo_impianto_dett'] + '</br>' +
                 dati[r]['indirizzo'] + ', ' + dati[r]['comune'] + ' ( ' + dati[r]['prov'] + ' )</br>' +
+                '<b>Note:</b> ' + dati[r]['note'] + '</br>' +
                 '<i>Longitudine: ' + dati[r]['gl_xcoord'] + ' Latitudine: ' + dati[r]['gl_ycoord'] + '</i></div>';
         marker = new google.maps.Marker({
             position: new google.maps.LatLng(utils.changeStringToNumber(dati[r]['gl_ycoord']), utils.changeStringToNumber(dati[r]['gl_xcoord'])),
@@ -46,11 +47,11 @@ function addMarkerImp(dati) {
             draggable: false,
             type: 'impianti',
             info: new google.maps.InfoWindow({content: content}),
-            flaVi: '<tr><td>' + dati[r]['societa'] + '</td><td>' + dati[r]['audiposter'] + '</td><td>' + dati[r]['indirizzo'] + '</td><td>' + dati[r]['comune'] + '</td><td>' + 
-                    dati[r]['prov'] + '</td><td>' + dati[r]['tipo_impianto_dett'] + '</td><td>' + dati[r]['regione'] + '</td><td>' + 
-                    dati[r]['circuito'] + '</td><td>' + dati[r]['gl_xcoord']  + '</td><td>' + dati[r]['gl_ycoord'] + '</td><td>' + 
-                    dati[r]['distanza'] + '</td><td>' + dati[r]['numero'] + '</td><td>' + dati[r]['tipo_impianto_sint'] + '</td><td>' + 
-                    dati[r]['costi_listino'] + '</td><td>' + dati[r]['lux'] + '</td><td>' + dati[r]['qp_citta'] + '</td><td>' + 
+            flaVi: '<tr><td>' + dati[r]['societa'] + '</td><td>' + dati[r]['audiposter'] + '</td><td>' + dati[r]['indirizzo'] + '</td><td>' + dati[r]['comune'] + '</td><td>' +
+                    dati[r]['prov'] + '</td><td>' + dati[r]['tipo_impianto_dett'] + '</td><td>' + dati[r]['regione'] + '</td><td>' +
+                    dati[r]['circuito'] + '</td><td>' + dati[r]['gl_xcoord'] + '</td><td>' + dati[r]['gl_ycoord'] + '</td><td>' +
+                    dati[r]['distanza'] + '</td><td>' + dati[r]['numero'] + '</td><td>' + dati[r]['tipo_impianto_sint'] + '</td><td>' +
+                    dati[r]['costi_listino'] + '</td><td>' + dati[r]['lux'] + '</td><td>' + dati[r]['qp_citta'] + '</td><td>' +
                     dati[r]['qp_circuito'] + '</td><td>' + dati[r]['qp_impianto'] + '</td><td>' + dati[r]['cimasa'] + '</td><td>' + dati[r]['inpe'] + '</td><td>' + dati[r]['note'] + '</td></tr>'
         });
         marker.fvCenter = marker.getPosition();
@@ -229,47 +230,87 @@ function getMarkerNewPosition() {
 //'<div class="contentPOI" ><b>' + dati[r]['DESCRIZIONE'] + '</b></br>'
 //+ dati[r]['INDIRIZZO'] + '</br>' + dati[r]['COMUNE'] + '</div>'
 function codeAddress(addressList) {
-    var t = '<table class="table" id="infoTable">' +
-            '<tr><th>societa</th><th>audiposter</th><th>indirizzo</th><th>comune</th>' +
-            '<th>prov</th><th>tipo_impianto_dett</th><th>regione</th><th>circuito</th>' +
-            '<th>gl_xcoord</th><th>gl_ycoord</th><th>distanza</th><th>numero</th><th>tipo_impianto_sint</th>' +
-            '<th>costi_listino</th><th>lux</th><th>qp_citta</th><th>qp_circuito</th>' +
-            '<th>qp_impianto</th><th>cimasa</th><th>inpe</th><th>note</th></tr>';
-    var x = 0;
-    var no = 0;
+    tot = addressList.length - 1;
     for (var i = 0; i < addressList.length; i++) {
+        if (addressList[i]['indirizzo']) {
             var address = addressList[i]['indirizzo'] + ' ' + addressList[i]['comune'] + ' ' + addressList[i]['prov'];
-            geocoder.geocode({'address': address}, function (results, status) {
-                if (status === google.maps.GeocoderStatus.OK) {
-                    var marker = new google.maps.Marker({
-                        map: window.fvMap,
-                        position: results[0].geometry.location
-                    });
-                t += '<tr>' + '<td>' + '</td>' + '<td>' + '</td>' +
-                        '<td>' + results[0].formatted_address + 
-                        '</td>' + '<td>' + '</td>' + '<td>' + '</td>' + '<td>' + '</td>' + '<td>' + '</td>' + '<td>' + '</td>' +
-                        '<td>' + utils.changeStringToNumber(marker.getPosition().lat(), ',') + '</td>' +
-                        '<td>' + utils.changeStringToNumber(marker.getPosition().lng(), ',') + '</td>' +
-                        '</tr>';
-                x++;
-                arrAddresses.push({address: results[0].formatted_address, marker: marker});
-            } else {
-                x++;
-                no++;
-                }
-            });
+            var record = addressList[i];
+            var x = geocoder.geocode({'address': address}, addressCallBack(record));
         }
-    var xy = setInterval(function () {
-        if (addressList.length === x) {
-            t += '</table>';
-            utils.infoModal('Caricati ' + addressList.length + ' indirizzi di cui ' + no + ' non trovati.', t, true);
-            clearInterval(xy);
-        }
-    }, 1000);
+    }
 }
-function goToAddress(address){
+
+var t = '<table class="table" id="infoTable">' +
+        '<tr><th>societa</th><th>audiposter</th><th>indirizzo</th><th>comune</th>' +
+        '<th>prov</th><th>tipo_impianto_dett</th><th>regione</th><th>circuito</th>' +
+        '<th>gl_xcoord</th><th>gl_ycoord</th><th>distanza</th><th>numero</th><th>tipo_impianto_sint</th>' +
+        '<th>costi_listino</th><th>lux</th><th>qp_citta</th><th>qp_circuito</th>' +
+        '<th>qp_impianto</th><th>cimasa</th><th>inpe</th><th>note</th></tr>';
+
+var cont = 0;
+var tot = 0;
+
+function addressCallBack(addressRecord) {
+    var no = 0;
+    var geocodeCallBack = function (results, status) {
+        var record = addressRecord;
+        if (status === google.maps.GeocoderStatus.OK && results[0].address_components[1].long_name !== results[0].address_components[2].long_name) {
+            var marker = new google.maps.Marker({
+                map: window.fvMap,
+                position: results[0].geometry.location,
+                info: new google.maps.InfoWindow({content: record['address']})
+            });
+            t += '<tr>' +
+                    '<td>' + record['societa'] + '</td>' + '<td>' + record['audiposter'] + '</td>' +
+                    '<td>' + results[0].formatted_address + '</td>' +
+                    '<td>' + record['comune'] + '</td>' + '<td>' + record['prov'] + '</td>' +
+                    '<td>' + record['tipo_impianto_dett'] + '</td>' + '<td>' + record['regione'] + '</td>' +
+                    '<td>' + record['circuito'] + '</td>' +
+                    '<td>' + utils.changeStringToNumber(marker.getPosition().lat(), ',') + '</td>' +
+                    '<td>' + utils.changeStringToNumber(marker.getPosition().lng(), ',') + '</td>' +
+                    '<td>' + record['distanza'] + '</td>' + '<td>' + record['numero'] + '</td>' + '<td>' + record['tipo_impianto_sint'] + '</td>' +
+                    '<td>' + record['costi_listino'] + '</td>' + '<td>' + record['lux'] + '</td>' + '<td>' + record['qp_citta'] + '</td>' +
+                    '<td>' + record['qp_circuito'] + '</td>' + '<td>' + record['qp_impianto'] + '</td>' + '<td>' + record['cimasa'] + '</td>' +
+                    '<td>' + record['note'] + '</td>' +
+                    '</tr>';
+            arrAddresses.push({address: results[0].formatted_address, marker: marker});
+        } else {
+            t += '<tr>' +
+                    '<td>' + record['societa'] + '</td>' + '<td>' + record['audiposter'] + '</td>' +
+                    '<td>' + record['indirizzo'] + '</td>' +
+                    '<td>' + record['comune'] + '</td>' + '<td>' + record['prov'] + '</td>' +
+                    '<td>' + record['tipo_impianto_dett'] + '</td>' + '<td>' + record['regione'] + '</td>' +
+                    '<td>' + record['circuito'] + '</td>' +
+                    '<td>' + record['gl_xcoord'] + '</td>' +
+                    '<td>' + record['gl_ycoord'] + '</td>' +
+                    '<td>' + record['distanza'] + '</td>' + '<td>' + record['numero'] + '</td>' + '<td>' + record['tipo_impianto_sint'] + '</td>' +
+                    '<td>' + record['costi_listino'] + '</td>' + '<td>' + record['lux'] + '</td>' + '<td>' + record['qp_citta'] + '</td>' +
+                    '<td>' + record['qp_circuito'] + '</td>' + '<td>' + record['qp_impianto'] + '</td>' + '<td>' + record['cimasa'] + '</td>' +
+                    '<td>' + record['note'] + '</td>' +
+                    '</tr>';
+            no++;
+        }
+        cont++
+        if (cont === tot) {
+            t += '</table>';
+            utils.infoModal('Caricati ' + tot + ' indirizzi di cui ' + no + ' non trovati.', t, true);
+            cont = 0;
+            tot = 0;
+        }
+    };
+    return geocodeCallBack;
+}
+/*    var xy = setInterval(function () {
+ if (addressList.length === x) {
+ t += '</table>';
+ utils.infoModal('Caricati ' + addressList.length + ' indirizzi di cui ' + no + ' non trovati.', t, true);
+ clearInterval(xy);
+ }
+ }, 1000);
+ }*/
+function goToAddress(address) {
     geocoder.geocode({'address': address}, function (results, status) {
-        if (status === google.maps.GeocoderStatus.OK){
+        if (status === google.maps.GeocoderStatus.OK) {
             window.fvMap.setCenter(results[0].geometry.location);
             window.fvMap.setZoom(16);
         }
