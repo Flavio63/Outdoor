@@ -252,26 +252,41 @@ var tot = 0;
 
 function addressCallBack(addressRecord) {
     var no = 0;
+    var street, locality, prov, region;
+    
     var geocodeCallBack = function (results, status) {
         var record = addressRecord;
-        if (status === google.maps.GeocoderStatus.OK && results[0].address_components[1].long_name !== results[0].address_components[2].long_name) {
+        var s = results[0].address_components[0].types[0];
+        if (status === google.maps.GeocoderStatus.OK && (s === 'street_number' || s === 'route')) {
             var marker = new google.maps.Marker({
                 map: window.fvMap,
                 position: results[0].geometry.location,
                 info: new google.maps.InfoWindow({content: record['address']})
             });
+            markerEvent(marker);
+            if (s === 'street_number') {
+                street = results[0].address_components[1].long_name + ', ' + results[0].address_components[0].long_name;
+                locality = results[0].address_components[2].long_name;
+                prov = results[0].address_components[4].short_name;
+                region = results[0].address_components[5].long_name;
+            } else {
+                street = results[0].address_components[0].long_name;
+                locality = results[0].address_components[1].long_name;
+                prov = results[0].address_components[2].short_name;
+                region = results[0].address_components[3].long_name;
+            }
             t += '<tr>' +
                     '<td>' + record['societa'] + '</td>' + '<td>' + record['audiposter'] + '</td>' +
-                    '<td>' + results[0].formatted_address + '</td>' +
-                    '<td>' + record['comune'] + '</td>' + '<td>' + record['prov'] + '</td>' +
-                    '<td>' + record['tipo_impianto_dett'] + '</td>' + '<td>' + record['regione'] + '</td>' +
+                    '<td>' + street + '</td>' +
+                    '<td>' + locality + '</td>' + '<td>' + prov + '</td>' +
+                    '<td>' + record['tipo_impianto_dett'] + '</td>' + '<td>' + region + '</td>' +
                     '<td>' + record['circuito'] + '</td>' +
-                    '<td>' + utils.changeStringToNumber(marker.getPosition().lat(), ',') + '</td>' +
                     '<td>' + utils.changeStringToNumber(marker.getPosition().lng(), ',') + '</td>' +
+                    '<td>' + utils.changeStringToNumber(marker.getPosition().lat(), ',') + '</td>' +
                     '<td>' + record['distanza'] + '</td>' + '<td>' + record['numero'] + '</td>' + '<td>' + record['tipo_impianto_sint'] + '</td>' +
                     '<td>' + record['costi_listino'] + '</td>' + '<td>' + record['lux'] + '</td>' + '<td>' + record['qp_citta'] + '</td>' +
                     '<td>' + record['qp_circuito'] + '</td>' + '<td>' + record['qp_impianto'] + '</td>' + '<td>' + record['cimasa'] + '</td>' +
-                    '<td>' + record['note'] + '</td>' +
+                    '<td>' + record['inpe'] + '</td>' + '<td>' + record['note'] + '</td>' +
                     '</tr>';
             arrAddresses.push({address: results[0].formatted_address, marker: marker});
         } else {
@@ -286,7 +301,7 @@ function addressCallBack(addressRecord) {
                     '<td>' + record['distanza'] + '</td>' + '<td>' + record['numero'] + '</td>' + '<td>' + record['tipo_impianto_sint'] + '</td>' +
                     '<td>' + record['costi_listino'] + '</td>' + '<td>' + record['lux'] + '</td>' + '<td>' + record['qp_citta'] + '</td>' +
                     '<td>' + record['qp_circuito'] + '</td>' + '<td>' + record['qp_impianto'] + '</td>' + '<td>' + record['cimasa'] + '</td>' +
-                    '<td>' + record['note'] + '</td>' +
+                    '<td>' + record['inpe'] + '</td>' + '<td>' + record['note'] + '</td>' +
                     '</tr>';
             no++;
         }
